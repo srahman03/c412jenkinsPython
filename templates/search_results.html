@@ -1,0 +1,10 @@
+<h2>Search Results for "{{ query }}"</h2>
+{% if data %}
+    <ul>
+        {% for movie in data %}
+            <li>{{ movie[1] }} - {{ movie[2] }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No results found.</p>
+{% endif %}
