@@ -1,23 +1,28 @@
 from flask import * 
-from flask_mysqldb import MySQL
-# pip install flask-mysqldb
+import pymysql
+
 app = Flask ("myflaskWithSQL")
-app.secret_key = "abcd" # to create session variables you need this key
+app.secret_key = "abcd" # for the flash variable
+db_config = {
+    'host': '192.168.1.141',
+    'user': 'flaskuser',
+    'password': 'Samid@2013',
+    'database': 'flask'
+}
 
-#database connection
-app.config['MYSQL_HOST'] = '192.168.1.141'
-app.config['MYSQL_USER'] = 'flaskuser'
-app.config['MYSQL_PASSWORD'] = 'Samid@2013'
-app.config['MYSQL_DB'] = 'flask'
-
-mysql = MySQL(app)
+# Function to get a database connection
+def get_db_connection():
+    connection = pymysql.connect(**db_config)
+    return connection
 
 @app.route('/')
 def Home():
-    cur= mysql.connection.cursor()
-    cur.execute("SELECT * FROM movie_details")
-    fetchdata = cur.fetchall()
-    cur.close()
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM movie_details")
+    fetchdata = cursor.fetchall()
+    cursor.close()
+    connection.close()
     return render_template('getall.html', data=fetchdata)
 
 @app.route('/insert', methods=["POST"])
@@ -25,10 +30,12 @@ def insert():
     if request.method == "POST":
         name = request.form['name']
         description = request.form['description']
-        cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO movie_details (name, description) VALUES (%s, %s)", (name, description))
-        mysql.connection.commit()
-        cur.close()
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO movie_details (name, description) VALUES (%s, %s)", (name, description))
+        connection.commit()
+        cursor.close()
+        connection.close()
         flash("Data Inserted Successfully")
     return redirect(url_for('Home'))
 
@@ -40,10 +47,12 @@ def form():
 def search():
     if request.method == "POST":
         query = request.form['query']
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM movie_details WHERE name LIKE %s", ('%' + query + '%',))
-        search_results = cur.fetchall()
-        cur.close()
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        cursor.execute("SELECT * FROM movie_details WHERE name LIKE %s", ('%' + query + '%',))
+        search_results = cursor.fetchall()
+        cursor.close()
+        connection.close()
     return render_template('search_results.html', data=search_results, query=query)
     
 
@@ -55,9 +64,11 @@ def remove():
 def delete():
     if request.method=="POST":
         name = request.form['name']
-        cur = mysql.connection.cursor()
-        cur.execute("delete FROM movie_details WHERE name LIKE %s", ('%' + name + '%',))
-        mysql.connection.commit()
-        cur.close()
+        connection = get_db_connection()
+        cursor = connection.cursor()
+        cursor.execute("delete FROM movie_details WHERE name LIKE %s", ('%' + name + '%',))
+        connection.commit()
+        cursor.close()
+        connection.close()
     return redirect(url_for('Home'))  
 app.run(debug=True)
