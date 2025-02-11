@@ -5,8 +5,8 @@ app = Flask ("myflaskWithSQL")
 app.secret_key = "abcd" # to create session variables you need this key
 
 #database connection
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_HOST'] = '192.168.1.141'
+app.config['MYSQL_USER'] = 'flaskuser'
 app.config['MYSQL_PASSWORD'] = 'Samid@2013'
 app.config['MYSQL_DB'] = 'flask'
 
