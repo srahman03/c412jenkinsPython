@@ -71,4 +71,6 @@ def delete():
         cursor.close()
         connection.close()
     return redirect(url_for('Home'))  
+
 app.run(host="0.0.0.0", port=80, debug=True)
+
