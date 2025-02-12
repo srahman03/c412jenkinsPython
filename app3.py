@@ -17,12 +17,12 @@ def get_db_connection():
 
 @app.route('/')
 def Home():
-    connection = get_db_connection()
-    cursor = connection.cursor()
-    cursor.execute("SELECT * FROM movie_details")
-    fetchdata = cursor.fetchall()
-    cursor.close()
-    connection.close()
+    connection = get_db_connection() # Step 1: Connect to MySQL
+    cursor = connection.cursor() # Step 2: Create a cursor
+    cursor.execute("SELECT * FROM movie_details") # Step 3: Execute SQL query
+    fetchdata = cursor.fetchall()  # Step 4: Fetch all results
+    cursor.close() # Step 5: Close cursor
+    connection.close() # Step 6: Close database connection
     return render_template('getall.html', data=fetchdata)
 
 @app.route('/insert', methods=["POST"])
