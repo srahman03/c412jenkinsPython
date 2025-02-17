@@ -43,19 +43,17 @@ def insert():
 def form():
     return render_template('form.html')  # Render the form
 
-@app.route('/search', methods=['POST'])
+@app.route('/search', methods=['GET'])
 def search():
-    if request.method == "POST":
-        query = request.form['query']
-        connection = get_db_connection()
-        cursor = connection.cursor()
-        cursor.execute("SELECT * FROM movie_details WHERE name LIKE %s", ('%' + query + '%',))
-        search_results = cursor.fetchall()
-        cursor.close()
-        connection.close()
+    query = request.args.get('query', '')  # Use request.args for GET
+    connection = get_db_connection()
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM movie_details WHERE name LIKE %s", ('%' + query + '%',))
+    search_results = cursor.fetchall()
+    cursor.close()
+    connection.close()
     return render_template('search_results.html', data=search_results, query=query)
-    
-
+#query = http://127.0.0.1/search?query=frozen
 @app.route('/remove')
 def remove():
     return render_template('delete.html')  # Render the delete page
