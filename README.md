@@ -17,9 +17,9 @@
 - Create pipeline item project
 
 ## My steps
-### Git cloned repo
-### Created Flask App on windows
-### Checked Deployment on localhost on windows
-### Created Jenkins Pipeline project to build, deploy on Virtual Machine server (centOS10)
-### Checked Deployment on VM (Virtual Machine) IP Address
-### SUCCESS
+#### Git cloned repo
+#### Created Flask App on windows
+#### Checked Deployment on localhost on windows
+#### Created Jenkins Pipeline project to build, deploy on Virtual Machine server (centOS10)
+#### Checked Deployment on VM (Virtual Machine) IP Address
+#### SUCCESS
